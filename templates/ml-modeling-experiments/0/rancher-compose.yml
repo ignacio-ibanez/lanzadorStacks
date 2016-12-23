@@ -1,0 +1,9 @@
+.catalog:
+    name: "lanzadorStacks"
+    version: "v0.1"
+    description: "Lanzador de experimentos para diferentes configuraciones de varios stacks del catalogo."
+    questions:
+        - variable: URL_ENTRADAS
+          label: "url donde se encuentra el archivo donde leer la lista de parametros."
+          required: true
+          type: "string"

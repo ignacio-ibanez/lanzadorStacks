@@ -1,0 +1,12 @@
+version: '2'
+services:
+  lanzadorServicios:
+    image: ignacioibanez/lanzadorStacks:1.0.0
+    environment:
+      URL_ENTRADAS: ${URL_ENTRADAS}
+    stdin_open: true
+    entrypoint:
+        - sh
+        - -c
+        - python lanzadorServicios.py $$URL_ENTRADAS 
+    tty: true

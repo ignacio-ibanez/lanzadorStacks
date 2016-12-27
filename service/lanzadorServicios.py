@@ -72,6 +72,7 @@ limitStacks = entradas["limit_stacks"]
 stacksRunning = 0
 
 def getParams(parametrosYml):
+    parametrosNombre=[]
     parametros=[]
     #Las distintas formas que se consideran son: parametroNombre->n
     #1. [valorInicial:valorFinal:Salto] -> Lineal

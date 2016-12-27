@@ -74,25 +74,26 @@ stacksRunning = 0
 def getParams(parametrosYml):
     parametrosNombre=[]
     parametros=[]
+    logging.critical(parametrosYml)
     #Las distintas formas que se consideran son: parametroNombre->n
     #1. [valorInicial:valorFinal:Salto] -> Lineal
     #2. TODO: [valorInicial:valorFinal:Función] -> Otro tipo de funcion
     #3. [un String]
     for parametro in parametrosYml:
-        parametrosNombre.append(parametro)
-        opcion = entradas[parametro]['type'] #parametro[parametro.index("{"):parametro.index("}")]
         logging.critical(parametro)
+        parametrosNombre.append(parametro)
+        opcion = parametrosYml[parametro]['type'] #parametro[parametro.index("{"):parametro.index("}")]
         if(opcion=='lineal'):
-            valorInicial = entradas[parametro]['initial-value']
-            valorFinal = entradas[parametro]["final-value"]
-            valorSalto = entradas[parametro]["interval"]
+            valorInicial = parametrosYml[parametro]['initial-value']
+            valorFinal = parametrosYml[parametro]["final-value"]
+            valorSalto = parametrosYml[parametro]["interval"]
             opcionesParametro = numpy.arange(valorInicial, valorFinal, valorSalto)
             parametros.append(opcionesParametro.tolist())
         elif(opcion==2):
             #opcionesParametro
             pass
         elif(opcion=="absolute"):
-            parametros.append(entradas[parametro]["param"])
+            parametros.append(parametrosYml[parametro]["param"])
         else:
             logging.critical('ERROR: FORMATO DE PARAMETROS INCORRECTO')
             raise SyntaxError('Parametros en el yml de entradas incorectos')
@@ -134,6 +135,8 @@ def getConfiguration(catalog):
     content_all = r.json()
     logging.critical('Obtenido el objeto JSON de la API')
     content_dockercompose = str(content_all['files']['docker-compose.yml'])
+    logging.critial('docker compose del JSON')
+    logging.critical(content_dockercompose)
     docker_compose = open('docker-compose.yml', 'w')
     docker_compose.write(content_dockercompose)
     docker_compose.close()

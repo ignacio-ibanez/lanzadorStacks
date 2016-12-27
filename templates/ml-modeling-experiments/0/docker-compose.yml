@@ -1,7 +1,7 @@
 version: '2'
 services:
   lanzadorServicios:
-    image: ignacioibanez/lanzadorstacks:1.0.0
+    image: ignacioibanez/lanzadorstacks:latest
     environment:
       URL_ENTRADAS: ${URL_ENTRADAS}
     stdin_open: true

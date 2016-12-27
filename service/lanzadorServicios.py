@@ -70,29 +70,6 @@ logging.critical('Obtenido el fichero de configuracion para los parametros')
 time_stop = entradas["time_stop"]
 limitStacks = entradas["limit_stacks"]
 stacksRunning = 0
-catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]][::-1]
-for catalog in catalogsNombre:
-    catalogName = catalog
-    logging.critical(catalogName)
-    cont = 0
-    getConfiguration(entradas["stacks_catalog"][catalogName])
-
-def getConfiguration(catalog):
-    url_catalog = catalog["URL_API"]
-    access_key = catalog["ACCESS_KEY"]
-    secret_key = catalog["SECRET_KEY"]
-    url = catalog["URL_RANCHER"]
-    #Peticion a la API para obtener el dockercompose
-    auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
-    r = requests.get(url=url_catalog, auth=auth)
-    content_all = r.json()
-    logging.critical('Obtenido el objeto JSON de la API')
-    content_dockercompose = str(content_all['files']['docker-compose.yml'])
-    docker_compose = open('docker-compose.yml', 'w')
-    docker_compose.write(content_dockercompose)
-    docker_compose.close()
-    parametros = catalog["PARAMS"]
-    getParams(parametros)
 
 def getParams(parametrosYml):
     parametros=[]
@@ -142,3 +119,31 @@ def getParams(parametrosYml):
         threads[cont].start()
         stacksRunning += 1
         cont = cont + 1
+
+
+def getConfiguration(catalog):
+    url_catalog = catalog["URL_API"]
+    access_key = catalog["ACCESS_KEY"]
+    secret_key = catalog["SECRET_KEY"]
+    url = catalog["URL_RANCHER"]
+    #Peticion a la API para obtener el dockercompose
+    auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
+    r = requests.get(url=url_catalog, auth=auth)
+    content_all = r.json()
+    logging.critical('Obtenido el objeto JSON de la API')
+    content_dockercompose = str(content_all['files']['docker-compose.yml'])
+    docker_compose = open('docker-compose.yml', 'w')
+    docker_compose.write(content_dockercompose)
+    docker_compose.close()
+    parametros = catalog["PARAMS"]
+    getParams(parametros)
+
+
+catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]][::-1]
+for catalog in catalogsNombre:
+    catalogName = catalog
+    logging.critical(catalogName)
+    cont = 0
+    getConfiguration(entradas["stacks_catalog"][catalogName])
+
+

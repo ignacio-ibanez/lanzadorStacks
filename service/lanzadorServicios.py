@@ -41,6 +41,13 @@ def startService(name_stack):
         '--project-name', name_stack,
         'start'])
 
+def getLogsContainer(name_stack):
+    call([
+        './exec/rancher',
+        '...',
+        '>', ''.join([name_stack,'_logs.txt'], '2>&1')])
+
+
 # TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que interese que escriba en algun lado
 # logger = logging.getLogger('services_launcher')
 

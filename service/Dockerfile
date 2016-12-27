@@ -3,4 +3,3 @@ RUN pip install requests pyyaml numpy
 COPY $PWD /usr/src/myapp
 WORKDIR /usr/src/myapp
 
-# TODO: hacer automate build de la imagen

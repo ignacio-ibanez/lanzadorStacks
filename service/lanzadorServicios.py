@@ -81,6 +81,7 @@ def getParams(parametrosYml):
     for parametro in parametrosYml:
         parametrosNombre.append(parametro)
         opcion = entradas[parametro]['type'] #parametro[parametro.index("{"):parametro.index("}")]
+        logging.critical(parametro)
         if(opcion=='lineal'):
             valorInicial = entradas[parametro]['initial-value']
             valorFinal = entradas[parametro]["final-value"]
@@ -137,10 +138,11 @@ def getConfiguration(catalog):
     docker_compose.write(content_dockercompose)
     docker_compose.close()
     parametros = catalog["PARAMS"]
+    logging.critical(parametros)
     getParams(parametros)
 
 
-catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]][::-1]
+catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]]#[::-1]
 for catalog in catalogsNombre:
     catalogName = catalog
     logging.critical(catalogName)

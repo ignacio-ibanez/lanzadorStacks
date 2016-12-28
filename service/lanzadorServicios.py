@@ -83,7 +83,7 @@ def getParams(parametrosYml):
         logging.critical(parametro)
         parametrosNombre.append(parametro)
         opcion = parametrosYml[parametro]['type'] #parametro[parametro.index("{"):parametro.index("}")]
-        logging.critical(opcion)
+        logging.critical(opcionesParametro)
         if(opcion=='lineal'):
             valorInicial = parametrosYml[parametro]['initial-value']
             valorFinal = parametrosYml[parametro]["final-value"]

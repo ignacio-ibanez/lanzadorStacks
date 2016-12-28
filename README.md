@@ -1,31 +1,38 @@
 <!-- README FO GIT HUB -->
-# ml-modeling
+# Lanzador de Stacks
 
-Este proyecto servirá para las tareas de ml-modeling. El objetivo actual es lanzar varias instancias de un stack desde el catalogo de rancher con diferentes configuraciones que se darán mediante una lista.
+Este proyecto servirá para las tareas de ml-modeling. El objetivo actual es lanzar varias instancias de varios stacks registrados en el catalogo de rancher con diferentes configuraciones que se darán mediante una lista.
 
-Este proyecto tiene dos partes diferenciadas:
-* Una es la parte donde se aloja el script de python y su correspondiente dockerizacion.
-* La segunda es la carpeta que añadirá este servicio como stack del catalogo de rancher para que se pueda lanzar desde ahi.
+Este repositorio tiene dos partes diferenciadas:
+* Carpeta service: donde se aloja el script de python y su correspondiente dockerizacion.
+* Carpeta templates: la carpeta que añadirá este proyecto como stack del catalogo de rancher para que se pueda lanzar desde ahi.
 
-Estas dos partes se describirán más en detalle a continuación.
-
-### Notas sobre la version actual
-
-Para pruebas, ahora mismo esta configurado el script de python de tal forma que se borran los stacks lanzados pasado un tiempo determinado. De momento solo queremos comprobar que lanza los stacks correctamente desde rancher y docker.
-Este parametro puede ser configurable en el futuro. Queda como tarea pendiente
 
 ## Getting Started
 
 El programa esta pensado para ser lanzado como un stack de rancher desde el catalogo.
 En primer lugar debemos añadir a nuestro rancher como catalogo este repositorio. De esta forma tendremos acceso al servicio desde el catalogo.
-A continuación, entraremos en nuestro catalogo y seleccionamos este stack. Debemos elegir la version (version actual: v0.1) y se mostrarán las preguntas a rellenar. Estas preguntas serán:
+A continuación, entraremos en nuestro catalogo y seleccionamos este stack. Debemos elegir la version (version actual: v0.1) y se solicitará la URL donde se encuentran los parámetros de configuración, en formato YAML, con los que se desea arrancar el servicio. Estos parámetros son:
 
-1. Url de los parametros de configuración
-2. Acces key del rancher
-3. Secret key del rancher
-4. Url del rancher:
-5. Url del stack del catalogo de rancher a lanzar. Esta url hace referencia a la API de rancher. Tendremos que buscar en esta el stack que queremos lanzar en la API. Tendrá la siguiente forma:
-`http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nombre_del_catalogo:nobre_del_servicio:0`
+1. time_stop: tiempo de vida de los stacks que va a lanzar el servicio
+2. limit_stacks: número máximo de stacks que deben estar ejecutandose al mismo tiempo
+3. stacks_catalog: lista YAML en la que se deben insertar cada uno de los stacks de catalogo que se desee ejecutar
+
+Dentro de cada uno de los stacks de catalogo a lanzar, se deben especificar los siguientes parámetros:
+
+1. CATALOG1: a sustituir por el nombre que queramos darle al stack
+2. URL_API: dirección de la API del stack a arrancar, donde se encuentra el docker compose. Debe tener la siguiente forma: `http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nombre_del_catalogo:nobre_del_servicio:0`
+3. URL_RANCHER: dirección base de rancher
+4. ACCESS_KEY: clave de acceso para poder acceder a la API de rancher
+5. SECRET_KEY: clave secreta para poder acceder a la API de rancher
+6. PARAMS: lista YAML donde se especifican los parametros que se van a usar
+
+Dentro de PARAMS, se debe registrar una lista con el nombre de los parametros y el rango de valores a lanzar, señalando lo siguiente:
+
+1. param1: a sustituir por el nombre del parametro del stack concreto a lanzar
+2. type: tipo de dato (absolute o lineal)
+3. param: lista con los parametros 
+
 
 #### NOTA IMPORTANTE: Hay que tener en cuenta que las url del rancher y del stack del catalogo tienen que ser accesibles desde nuestro host.
 

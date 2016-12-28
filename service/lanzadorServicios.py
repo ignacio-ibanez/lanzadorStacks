@@ -13,6 +13,7 @@ import logging
 # import argparse or click
 
 def stopService(name_stack):
+    global stacksRunning
     call([
         './exec/rancher',
         '--url', url,
@@ -54,6 +55,9 @@ def getLogsContainer(name_stack):
 logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
 
 # TODO: Dar nombre bien a los esperimentos lanzados.
+url = ''
+access_key = ''
+secret_key = ''
 parametrosNombre=[]
 threads = []
 catalogs = []
@@ -75,6 +79,7 @@ def getParams(parametrosYml):
     parametrosNombre=[]
     parametros=[]
     logging.critical(parametrosYml)
+    global stacksRunning
     #Las distintas formas que se consideran son: parametroNombre->n
     #1. [valorInicial:valorFinal:Salto] -> Lineal
     #2. TODO: [valorInicial:valorFinal:Función] -> Otro tipo de funcion
@@ -102,30 +107,35 @@ def getParams(parametrosYml):
     parametrosNombre = parametrosNombre[::-1]
     parametros = parametros[::-1]
     logging.critical('Obtenida la lista de posibles parametros')
+    cont = 1
 
     for param in itertools.product(*parametros):
         #Escritura del fichero de respuestas
         answers = open('answers.txt', 'w')
         for j in range(len(parametrosNombre)):
             answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
+        
         answers.close()
         project_name = ''.join([catalogName,'Model{num}'.format(num=cont)])
         logging.critical('Preparado para lanzar stacks')
+
+        while(stacksRunning>=limitStacks):
+            continue
 
         #Llamadas a rancher-compose
         createService(project_name)
         startService(project_name)
 
-        while(stacksRunning>=limitStacks):
-            continue
-
         threads.append(threading.Timer(time_stop, stopService, args=[project_name]))
-        threads[cont].start()
+        threads[cont-1].start()
         stacksRunning += 1
         cont = cont + 1
 
 
 def getConfiguration(catalog):
+    global url
+    global access_key
+    global secret_key
     url_catalog = catalog["URL_API"]
     access_key = catalog["ACCESS_KEY"]
     secret_key = catalog["SECRET_KEY"]

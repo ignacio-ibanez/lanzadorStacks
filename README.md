@@ -31,7 +31,29 @@ Dentro de PARAMS, se debe registrar una lista con el nombre de los parametros y 
 
 1. param1: a sustituir por el nombre del parametro del stack concreto a lanzar
 2. type: tipo de dato (absolute o lineal)
-3. param: lista con los parametros 
+3. param: lista con el rango de parámetros del param1
+
+Un modelo de YAML de configuración sería el siguiente:
+	
+	time_stop: 30.0
+	limit_stacks: 4
+	stacks_catalog:
+	  CATALOG1:
+	    URL_API: http://200.95.5.6:8080/v1-catalog/templates/impresionParams:app:0
+	    URL_RANCHER: http://200.95.5.6:8080/
+	    ACCESS_KEY: aaaaaaaaaaaaa
+	    SECRET_KEY: sssssssssssss
+	    PARAMS: 
+	      param1:
+	          type: absolute
+	          param:
+	            - Hola
+	            - Buenos Dias
+	      param2:
+	          type: lineal
+	          initial-value: 0
+	          final-value: 4
+	          interval: 2
 
 
 #### NOTA IMPORTANTE: Hay que tener en cuenta que las url del rancher y del stack del catalogo tienen que ser accesibles desde nuestro host.
@@ -44,11 +66,11 @@ En la carpeta service tenemos la dockerizacion del script en python con todo lo 
 
 ### Pruebas del script individuales
 
-Si se quiere probar el funcionamiento del script individualmente se debe tener en cuenta que este recibe argumentos. Estos argumentos corresponden a los mismos que hay que introducir en las preguntas y siguen el mismo orden con el que los hemos citado anteriormente.
-El comando por lo tanto tendrá la siguiente forma:
+Si se quiere probar el funcionamiento del script individualmente se debe tener en cuenta que este recibe un argumento.
+El comando tendría la siguiente forma:
 
 ```
-python lanzadorServicios.py http://ml-modeling.neocities.org/entradas.txt access_key secret_key http://185.24.5.232:8080/ http://185.24.5.232:8080/v1-catalog/templates/myRancher-Catalog:TestCatalog:0
+python lanzadorServicios.py http://iibanezm.neocities.org/modeloYAML.txt 
 ```
 
 ## Template para el catalogo

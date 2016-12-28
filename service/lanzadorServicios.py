@@ -114,7 +114,7 @@ def getParams(parametrosYml):
         answers = open('answers.txt', 'w')
         for j in range(len(parametrosNombre)):
             answers.write(parametrosNombre[j]+'='+str(param[j])+'\n')
-        
+
         answers.close()
         project_name = ''.join([catalogName,'Model{num}'.format(num=cont)])
         logging.critical('Preparado para lanzar stacks')
@@ -146,7 +146,7 @@ def getConfiguration(catalog):
     content_all = r.json()
     logging.critical('Obtenido el objeto JSON de la API')
     content_dockercompose = str(content_all['files']['docker-compose.yml'])
-    logging.critial('docker compose del JSON')
+    logging.critical('docker compose del JSON')
     logging.critical(content_dockercompose)
     docker_compose = open('docker-compose.yml', 'w')
     docker_compose.write(content_dockercompose)

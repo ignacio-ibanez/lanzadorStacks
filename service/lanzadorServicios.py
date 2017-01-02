@@ -88,7 +88,6 @@ def getParams(parametrosYml):
         logging.critical(parametro)
         parametrosNombre.append(parametro)
         opcion = parametrosYml[parametro]['type'] #parametro[parametro.index("{"):parametro.index("}")]
-        logging.critical(opcionesParametro)
         if(opcion=='lineal'):
             valorInicial = parametrosYml[parametro]['initial-value']
             valorFinal = parametrosYml[parametro]["final-value"]
@@ -147,12 +146,10 @@ def getConfiguration(catalog):
     logging.critical('Obtenido el objeto JSON de la API')
     content_dockercompose = str(content_all['files']['docker-compose.yml'])
     logging.critical('docker compose del JSON')
-    logging.critical(content_dockercompose)
     docker_compose = open('docker-compose.yml', 'w')
     docker_compose.write(content_dockercompose)
     docker_compose.close()
     parametros = catalog["PARAMS"]
-    logging.critical(parametros)
     getParams(parametros)
 
 

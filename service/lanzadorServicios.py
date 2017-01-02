@@ -52,7 +52,7 @@ def get_logs_container(name_stack):
         '--secret-key', secret_key,
         'inspect',name_stack],
         stdout=PIPE)
-    logging.critical('Obteniendo serviceIds')
+    #logging.critical('Obteniendo serviceIds')
     (out, err) = llamadaInspect.communicate()
     if err:
         logging.critical('ERROR EN LA LLAMADA A RANCHER INSPECT')
@@ -86,7 +86,7 @@ def get_logs_container(name_stack):
 # TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que interese que escriba en algun lado
 # logger = logging.getLogger('services_launcher')
 
-logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
+#logging.critical('ENTRÓ EN EL LANZADOR DE STACKS')
 
 # TODO: Dar nombre bien a los esperimentos lanzados.
 url = ''
@@ -100,11 +100,11 @@ cont = 1
 
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
-logging.critical('url de las entradas:'+url_entradas)
+#logging.critical('url de las entradas:'+url_entradas)
 
 entradas = requests.get(url=url_entradas, verify=False)
 entradas = yaml.load(entradas.text)
-logging.critical('Obtenido el fichero de configuracion para los parametros')
+#logging.critical('Obtenido el fichero de configuracion para los parametros')
 
 time_stop = entradas["time_stop"]
 limitStacks = entradas["limit_stacks"]
@@ -113,7 +113,7 @@ stacksRunning = 0
 def lanzar_stacks(parametrosYml):
     parametrosNombre=[]
     parametros=[]
-    logging.critical(parametrosYml)
+    #logging.critical(parametrosYml)
     global stacksRunning
     global cont
     #Las distintas formas que se consideran son: parametroNombre->n
@@ -121,7 +121,7 @@ def lanzar_stacks(parametrosYml):
     #2. TODO: [valorInicial:valorFinal:Función] -> Otro tipo de funcion
     #3. [un String]
     for parametro in parametrosYml:
-        logging.critical(parametro)
+        #logging.critical(parametro)
         parametrosNombre.append(parametro)
         opcion = parametrosYml[parametro]['type'] #parametro[parametro.index("{"):parametro.index("}")]
         if(opcion=='lineal'):
@@ -141,7 +141,7 @@ def lanzar_stacks(parametrosYml):
 
     parametrosNombre = parametrosNombre[::-1]
     parametros = parametros[::-1]
-    logging.critical('Obtenida la lista de posibles parametros')
+    #logging.critical('Obtenida la lista de posibles parametros')
 
     for param in itertools.product(*parametros):
         #Escritura del fichero de respuestas
@@ -151,7 +151,7 @@ def lanzar_stacks(parametrosYml):
 
         answers.close()
         project_name = ''.join([catalogName,'Model{num}'.format(num=cont)])
-        logging.critical('Preparado para lanzar stacks')
+        #logging.critical('Preparado para lanzar stacks')
 
         while(stacksRunning>=limitStacks):
             continue
@@ -161,7 +161,7 @@ def lanzar_stacks(parametrosYml):
         startService(project_name)
 
         threads.append(threading.Timer(time_stop, rm_stack, args=[project_name]))
-        logging.critical("Se inicia el thread del stack con cont:"+str(cont-1))
+        #logging.critical("Se inicia el thread del stack con cont:"+str(cont-1))
         threads[cont-1].start()
         stacksRunning += 1
         cont = cont + 1
@@ -179,9 +179,9 @@ def getConfiguration(catalog):
     auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
     r = requests.get(url=url_catalog, auth=auth)
     content_all = r.json()
-    logging.critical('Obtenido el objeto JSON de la API')
+    #logging.critical('Obtenido el objeto JSON de la API')
     content_dockercompose = str(content_all['files']['docker-compose.yml'])
-    logging.critical('docker compose del JSON')
+    #logging.critical('docker compose del JSON')
     docker_compose = open('docker-compose.yml', 'w')
     docker_compose.write(content_dockercompose)
     docker_compose.close()
@@ -190,10 +190,10 @@ def getConfiguration(catalog):
 
 
 catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]][::-1]
-logging.critical(catalogsNombre)
+#logging.critical(catalogsNombre)
 for catalog in catalogsNombre:
     catalogName = catalog
-    logging.critical(catalogName)
+    #logging.critical(catalogName)
     getConfiguration(entradas["stacks_catalog"][catalogName])
 
 

@@ -73,7 +73,7 @@ time_stop = entradas["time_stop"]
 limitStacks = entradas["limit_stacks"]
 stacksRunning = 0
 
-def getParams(parametrosYml):
+def lanzar_stacks(parametrosYml):
     parametrosNombre=[]
     parametros=[]
     logging.critical(parametrosYml)
@@ -149,7 +149,7 @@ def getConfiguration(catalog):
     docker_compose.write(content_dockercompose)
     docker_compose.close()
     parametros = catalog["PARAMS"]
-    getParams(parametros)
+    lanzar_stacks(parametros)
 
 
 catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]][::-1]

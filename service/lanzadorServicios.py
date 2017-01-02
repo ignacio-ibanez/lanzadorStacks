@@ -154,6 +154,7 @@ def getConfiguration(catalog):
 
 
 catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]]
+logging.critical(catalogsNombre)
 for catalog in catalogsNombre:
     catalogName = catalog
     logging.critical(catalogName)

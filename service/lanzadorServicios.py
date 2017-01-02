@@ -13,6 +13,7 @@ import logging
 # import argparse or click
 
 def rm_stack(name_stack):
+    get_logs_container(name_stack)
     global stacksRunning
     call([
         './exec/rancher',
@@ -78,7 +79,6 @@ def get_logs_container(name_stack):
         else:
             logging.critical('Llamada a rancher logs correcta')
         service_logs = out.decode('utf-8')
-        # TODO: Decidir que hacer con los logs
         loggig.critical(service_logs)
 
     

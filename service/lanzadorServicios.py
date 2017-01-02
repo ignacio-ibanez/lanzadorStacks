@@ -126,6 +126,7 @@ def getParams(parametrosYml):
         startService(project_name)
 
         threads.append(threading.Timer(time_stop, stopService, args=[project_name]))
+        logging.critical("Se inicia el thread del stack con cont:"+str(cont-1))
         threads[cont-1].start()
         stacksRunning += 1
         cont = cont + 1
@@ -153,7 +154,7 @@ def getConfiguration(catalog):
     getParams(parametros)
 
 
-catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]]
+catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]][::-1]
 logging.critical(catalogsNombre)
 for catalog in catalogsNombre:
     catalogName = catalog

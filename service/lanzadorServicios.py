@@ -12,7 +12,7 @@ import logging
 # TODO: Add an argeparser
 # import argparse or click
 
-def stopService(name_stack):
+def rm_stack(name_stack):
     global stacksRunning
     call([
         './exec/rancher',
@@ -42,11 +42,8 @@ def startService(name_stack):
         '--project-name', name_stack,
         'start'])
 
-def getLogsContainer(name_stack):
-    call([
-        './exec/rancher',
-        '...',
-        '>', ''.join([name_stack,'_logs.txt'], '2>&1')])
+def get_logs_container(name_stack):
+    
 
 
 # TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que interese que escriba en algun lado
@@ -126,7 +123,7 @@ def getParams(parametrosYml):
         createService(project_name)
         startService(project_name)
 
-        threads.append(threading.Timer(time_stop, stopService, args=[project_name]))
+        threads.append(threading.Timer(time_stop, rm_stack, args=[project_name]))
         logging.critical("Se inicia el thread del stack con cont:"+str(cont-1))
         threads[cont-1].start()
         stacksRunning += 1

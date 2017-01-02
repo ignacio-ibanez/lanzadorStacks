@@ -43,8 +43,45 @@ def startService(name_stack):
         'start'])
 
 def get_logs_container(name_stack):
-    
+    logging.critical('Obteniendo logs para'+name_stack)
+    llamadaInspect = Popen(
+        ['./exec/rancher',
+        '--url', url,
+        '--access-key', access_key,
+        '--secret-key', secret_key,
+        'inspect',name_stack],
+        stdout=PIPE)
+    logging.critical('Obteniendo serviceIds')
+    (out, err) = llamadaInspect.communicate()
+    if err:
+        logging.critical('ERROR EN LA LLAMADA A RANCHER INSPECT')
+        raise SyntaxError('Parametros en el yml de entradas incorectos')
+    else:
+        logging.critical('Llamada a rancher inspect correcta')
 
+    info_stack = json.loads(out.decode('utf-8'))
+
+    for service in info_stack['serviceIds']:
+        logging.critical('Logs del servicio'+service)
+        llamadaLogs = Popen(
+            ['./exec/rancher',
+            '--url', url,
+            '--access-key', access_key,
+            '--secret-key', secret_key,
+            'logs',service],
+            stdout=PIPE)
+        logging.critical('Obteniendo serviceIds')
+        (out, err) = llamadaLogs.communicate()
+        if err:
+            logging.critical('ERROR EN LA LLAMADA A RANCHER LOGS')
+            raise SyntaxError('Parametros en el yml de entradas incorectos')
+        else:
+            logging.critical('Llamada a rancher logs correcta')
+        service_logs = out.decode('utf-8')
+        # TODO: Decidir que hacer con los logs
+        loggig.critical(service_logs)
+
+    
 
 # TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que interese que escriba en algun lado
 # logger = logging.getLogger('services_launcher')

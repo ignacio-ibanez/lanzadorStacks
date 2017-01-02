@@ -153,7 +153,7 @@ def getConfiguration(catalog):
     getParams(parametros)
 
 
-catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]]#[::-1]
+catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]]
 for catalog in catalogsNombre:
     catalogName = catalog
     logging.critical(catalogName)

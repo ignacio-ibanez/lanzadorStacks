@@ -62,6 +62,7 @@ parametrosNombre=[]
 threads = []
 catalogs = []
 catalogName = ''
+cont = 1
 
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
@@ -80,6 +81,7 @@ def getParams(parametrosYml):
     parametros=[]
     logging.critical(parametrosYml)
     global stacksRunning
+    global cont
     #Las distintas formas que se consideran son: parametroNombre->n
     #1. [valorInicial:valorFinal:Salto] -> Lineal
     #2. TODO: [valorInicial:valorFinal:Función] -> Otro tipo de funcion
@@ -106,7 +108,6 @@ def getParams(parametrosYml):
     parametrosNombre = parametrosNombre[::-1]
     parametros = parametros[::-1]
     logging.critical('Obtenida la lista de posibles parametros')
-    cont = 1
 
     for param in itertools.product(*parametros):
         #Escritura del fichero de respuestas
@@ -159,7 +160,6 @@ logging.critical(catalogsNombre)
 for catalog in catalogsNombre:
     catalogName = catalog
     logging.critical(catalogName)
-    cont = 0
     getConfiguration(entradas["stacks_catalog"][catalogName])
 
 

@@ -79,7 +79,7 @@ def get_logs_container(name_stack):
         else:
             logging.critical('Llamada a rancher logs correcta')
         service_logs = out.decode('utf-8')
-        loggig.critical(service_logs)
+        logging.critical(service_logs)
 
     
 

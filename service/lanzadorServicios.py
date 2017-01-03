@@ -8,6 +8,7 @@ import threading
 import yaml
 import numpy
 import logging
+import os
 
 # TODO: Add an argeparser
 # import argparse or click
@@ -81,6 +82,12 @@ def get_logs_container(name_stack):
         service_logs = out.decode('utf-8')
         logging.critical(service_logs)
 
+        file_logs = ''.join(['./logs/',name_stack,'.txt'])
+        with open(file_logs,"w") as file:
+            file.write(service_logs)
+
+
+
     
 
 # TODO: Set up del logger en condiciones. Ahora todo esta a critical. Puede que interese que escriba en algun lado
@@ -90,21 +97,22 @@ def get_logs_container(name_stack):
 
 # TODO: Dar nombre bien a los esperimentos lanzados.
 url = ''
-access_key = ''
-secret_key = ''
 parametrosNombre=[]
 threads = []
 catalogs = []
 catalogName = ''
-cont = 1    
+cont = 1
+os.mkdir("./logs")
 
 #Lectura de parametros para las url y las keys
 url_entradas = str(sys.argv[1])
-#logging.critical('url de las entradas:'+url_entradas)
+logging.critical('url de las entradas:'+url_entradas)
+access_key = str(sys.argv[2])
+secret_key = str(sys.argv[3])
 
 entradas = requests.get(url=url_entradas, verify=False)
 entradas = yaml.load(entradas.text)
-#logging.critical('Obtenido el fichero de configuracion para los parametros')
+logging.critical('Obtenido el fichero de configuracion para los parametros')
 
 time_stop = entradas["time_stop"]
 limitStacks = entradas["limit_stacks"]
@@ -169,17 +177,13 @@ def lanzar_stacks(parametrosYml):
 
 def getConfiguration(catalog):
     global url
-    global access_key
-    global secret_key
     url_catalog = catalog["URL_API"]
-    access_key = catalog["ACCESS_KEY"]
-    secret_key = catalog["SECRET_KEY"]
     url = catalog["URL_RANCHER"]
     #Peticion a la API para obtener el dockercompose
     auth = requests.auth.HTTPBasicAuth(access_key, secret_key)
     r = requests.get(url=url_catalog, auth=auth)
     content_all = r.json()
-    #logging.critical('Obtenido el objeto JSON de la API')
+    logging.critical('Obtenido el objeto JSON de la API')
     content_dockercompose = str(content_all['files']['docker-compose.yml'])
     #logging.critical('docker compose del JSON')
     docker_compose = open('docker-compose.yml', 'w')
@@ -193,7 +197,7 @@ catalogsNombre = [catalog for catalog in entradas["stacks_catalog"]][::-1]
 #logging.critical(catalogsNombre)
 for catalog in catalogsNombre:
     catalogName = catalog
-    #logging.critical(catalogName)
+    logging.critical(catalogName)
     getConfiguration(entradas["stacks_catalog"][catalogName])
 
 

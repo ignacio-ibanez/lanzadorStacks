@@ -3,10 +3,12 @@ services:
   lanzadorServicios:
     image: ignacioibanez/lanzadorstacks:latest
     environment:
+    ACCESS_KEY: ${ACCESS_KEY}
+      SECRET_KEY: ${SECRET_KEY}
       URL_ENTRADAS: ${URL_ENTRADAS}
     stdin_open: true
     entrypoint:
         - sh
         - -c
-        - python lanzadorServicios.py $$URL_ENTRADAS 
+        - python lanzadorServicios.py $$URL_ENTRADAS $$ACCESS_KEY $$SECRET_KEY
     tty: true

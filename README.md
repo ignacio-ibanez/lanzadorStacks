@@ -12,7 +12,7 @@ Este repositorio tiene dos partes diferenciadas:
 
 El programa esta pensado para ser lanzado como un stack de rancher desde el catalogo.
 En primer lugar debemos añadir a nuestro rancher como catalogo este repositorio. De esta forma tendremos acceso al servicio desde el catalogo.
-A continuación, entraremos en nuestro catalogo y seleccionamos este stack. Debemos elegir la version (version actual: v0.1) y se solicitará la URL donde se encuentran los parámetros de configuración, en formato YAML, con los que se desea arrancar el servicio. Estos parámetros son:
+A continuación, entraremos en nuestro catalogo y seleccionamos este stack. Debemos elegir la version (version actual: v0.1) y se solicitará, además del la clave de acceso (Access-Key) y la clave secreta (Secret-Key) de la API a la que se va a acceder, la URL donde se encuentran los parámetros de configuración, en formato YAML, con los que se desea arrancar el servicio. Estos parámetros son:
 
 1. time_stop: tiempo de vida de los stacks que va a lanzar el servicio
 2. limit_stacks: número máximo de stacks que deben estar ejecutandose al mismo tiempo
@@ -23,9 +23,7 @@ Dentro de cada uno de los stacks de catalogo a lanzar, se deben especificar los 
 1. CATALOG1: a sustituir por el nombre que queramos darle al stack
 2. URL_API: dirección de la API del stack a arrancar, donde se encuentra el docker compose. Debe tener la siguiente forma: `http://url_de_ejemlo_donde_este_tu_rancher/v1-catalog/templates/nombre_del_catalogo:nobre_del_servicio:0`
 3. URL_RANCHER: dirección base de rancher
-4. ACCESS_KEY: clave de acceso para poder acceder a la API de rancher
-5. SECRET_KEY: clave secreta para poder acceder a la API de rancher
-6. PARAMS: lista YAML donde se especifican los parametros que se van a usar
+4. PARAMS: lista YAML donde se especifican los parametros que se van a usar
 
 Dentro de PARAMS, se debe registrar una lista con el nombre de los parametros y el rango de valores a lanzar, señalando lo siguiente:
 
@@ -41,8 +39,6 @@ Un modelo de YAML de configuración sería el siguiente:
 	  CATALOG1:
 	    URL_API: http://200.95.5.6:8080/v1-catalog/templates/impresionParams:app:0
 	    URL_RANCHER: http://200.95.5.6:8080/
-	    ACCESS_KEY: aaaaaaaaaaaaa
-	    SECRET_KEY: sssssssssssss
 	    PARAMS: 
 	      param1:
 	          type: absolute

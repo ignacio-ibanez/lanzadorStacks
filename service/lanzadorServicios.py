@@ -81,7 +81,7 @@ def get_logs_container(name_stack):
             logging.critical('Llamada a rancher logs correcta')
         service_logs = out.decode('utf-8')
         logging.critical(service_logs)
-
+        
         file_logs = ''.join(['./logs/',name_stack,'.txt'])
         with open(file_logs,"w") as file:
             file.write(service_logs)

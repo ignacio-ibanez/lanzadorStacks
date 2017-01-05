@@ -32,14 +32,14 @@ Dentro de PARAMS, se debe registrar una lista con el nombre de los parametros y 
 3. param: lista con el rango de parámetros del param1
 
 Un modelo de YAML de configuración sería el siguiente:
-	
+
 	time_stop: 30.0
 	limit_stacks: 4
 	stacks_catalog:
 	  CATALOG1:
 	    URL_API: http://200.95.5.6:8080/v1-catalog/templates/impresionParams:app:0
 	    URL_RANCHER: http://200.95.5.6:8080/
-	    PARAMS: 
+	    PARAMS:
 	      param1:
 	          type: absolute
 	          param:
@@ -62,11 +62,14 @@ En la carpeta service tenemos la dockerizacion del script en python con todo lo 
 
 ### Pruebas del script individuales
 
-Si se quiere probar el funcionamiento del script individualmente se debe tener en cuenta que este recibe un argumento.
+Si se quiere probar el funcionamiento del script individualmente se debe tener en cuenta que este recibe un dos argumentos:
+* La url de las entradas.
+* El Acces-Key
+* El Secret-Key
 El comando tendría la siguiente forma:
 
 ```
-python lanzadorServicios.py http://iibanezm.neocities.org/modeloYAML.txt 
+python lanzadorServicios.py http://iibanezm.neocities.org/modeloYAML.txt anlsdjghq89tqjnjnad ertyuikmnbvgchQWG1394141423jndfkcnq
 ```
 
 ## Template para el catalogo
